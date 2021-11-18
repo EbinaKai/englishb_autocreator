@@ -2,10 +2,12 @@ import openpyxl as excel
 import docx,random,os,shutil
 import english_sort
 
-create_file = 10    ##生成するファイル数
+create_file = 100    ##生成するファイル数
 random_list = []            ##出題する問題を格納
 section_tuple = (1,3,4,5)  ##問題の章番号
 question_num  = (7,7,8,8)  ##各章からの出題数
+#section_tuple = (1,3,4,5,6)  ##問題の章番号
+#question_num  = (6,6,6,6,6)  ##各章からの出題数
 
 ##変数の定義
 def define():
@@ -47,20 +49,23 @@ def write_question(random_list):
 ##word文書に解答用紙を出力
 def write_answer(answer_list):
     for para in ans_doc.paragraphs:
-        if 'japanese' in para.text:
-            para.text = para.text.replace('japanese',str(random_list[0][0]))
-        if 'english' in para.text:
-            para.text = para.text.replace('english',str(random_list[0][2]))
-        if 'answer' in para.text:
-            para.text = para.text.replace('answer',str(random_list[0][1]))
-            del random_list[0]
+        try:
+            if 'japanese' in para.text:
+                para.text = para.text.replace('japanese',str(random_list[0][0]))
+            if 'english' in para.text:
+                para.text = para.text.replace('english',str(random_list[0][2]))
+            if 'answer' in para.text:
+                para.text = para.text.replace('answer',str(random_list[0][1]))
+                del random_list[0]
+        except IndexError:
+            print("error")
     return None
 
 ##word文書の書き出し
 def output(name,file_num):
     if not os.path.isdir('exampaper'):
         os.makedirs('exampaper')
-        print("make directory 'exampaper' completed")
+#        print("make directory 'exampaper' completed")
     while(1):
         file_name = 'exampaper_englishb'+str(file_num)+name+'.docx'
         if not os.path.isfile('exampaper/'+file_name):
@@ -71,7 +76,7 @@ def output(name,file_num):
     else :
         ans_doc.save(file_name)
     shutil.move(file_name,'exampaper')
-    print("save '" + file_name + "' completed")
+#    print("save '" + file_name + "' completed")
     return file_num
 
 ##処理部分
