@@ -1,9 +1,8 @@
 import openpyxl as excel
 import docx,random,os,shutil
 import english_sort
-import copy
 
-create_file = 1             #生成するファイル数
+create_file = 10            #生成するファイル数
 random_list = []            #出題する問題を格納
 section_tuple = (1,3,4,5,6) #問題の章番号
 question_num  = (6,6,6,6,6) #各章からの出題数
@@ -47,25 +46,17 @@ def write_question(random_list):
 
 ##word文書に解答用紙を出力
 def write_answer(answer_list):
-    current = len(random_list)
-    japanese = len(random_list)
-    keep_list = []
-    keep_list.append(copy.deepcopy(random_list))
     for para in ans_doc.paragraphs:
         try:
             if 'japanese' in para.text:
-                japanese -= 1
                 para.text = para.text.replace('japanese',str(random_list[0][0]))
             if 'english' in para.text:
                 para.text = para.text.replace('english',str(random_list[0][2]))
             if 'answer' in para.text:
-                current -= 1
-                if current != japanese:
-                    print(keep_list[0][30-len(random_list)][4])
                 para.text = para.text.replace('answer',str(random_list[0][1]))
                 del random_list[0]
         except IndexError:
-            pass
+            print('error')
     return None
 
 ##word文書の書き出し
@@ -92,7 +83,7 @@ for i in range(create_file):
     define()
     set_question(sheet)
     random_list = choice_question()
-    random_list = random_list
+    random_list = random_list * 2
     write_question(random_list)
     write_answer(random_list)
     file_num = output('',file_num)
