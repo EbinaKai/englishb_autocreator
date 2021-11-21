@@ -2,7 +2,7 @@ import openpyxl as excel
 import docx,random,os,shutil
 import english_sort
 
-create_file = 10            #生成するファイル数
+create_file = 1            #生成するファイル数
 random_list = []            #出題する問題を格納
 section_tuple = (1,3,4,5,6) #問題の章番号
 question_num  = (6,6,6,6,6) #各章からの出題数
